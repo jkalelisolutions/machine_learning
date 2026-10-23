@@ -16,16 +16,17 @@ def get_weather(city):
 
 
 def get_country_info(country_code):
-    country_code = "+254"
-    url = f"https://restcountries.com/v3.1/alpha/{country_code}"
-    response = requests.get(url, timeout=10)
-    if response.status_code == 200:
-        data = response.json()
-        country = data  # Assuming the response is a list and we want the first country
-        return country
-    return None
-
-
+   api = os.getenv("AUTHORIZATION")
+   if not api:
+       raise RuntimeError("Failing to get RESTCOUNTRIES API. Please check and try again...")
+   url = f"https://api.restcountries.com/countries/v5"
+   response = requests.get(
+       url,
+       params={"q":country_code},
+       headers={"Authorization":api},
+       timeout=15
+   )
+   return response
 def run_tool():
     print("Travel Weather Tool")
     print("-------------------")
@@ -44,7 +45,7 @@ def run_tool():
         return
 
     country_code = weather_data["sys"]["country"]
-    country_data = get_country_info(country_code)
+    country_data = get_country_info(country_code).json()
 
     print(f"\n=== {city.title()}, {country_code} ===")
     print(f"Temperature : {weather_data['main']['temp']}C")
@@ -53,9 +54,10 @@ def run_tool():
     print(f"Wind        : {weather_data['wind']['speed']} m/s")
 
     if country_data:
-        population = country_data.get("population", 0)
-        region = country_data.get("region", "Unknown")
-        currencies = ", ".join(country_data.get("currencies", {}))
+        country = country_data["data"]["objects"][0]
+        population = country["population"]
+        region = country["region"]
+        currencies = list(country["currencies"])
         print(f"\n=== Country Info ===")
         print(f"Region      : {region}")
         print(f"Population  : {population:,}")
