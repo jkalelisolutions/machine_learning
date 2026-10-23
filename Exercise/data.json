@@ -1,0 +1,36 @@
+[
+    {
+        "Country": "Tanzania",
+        "Capital": {
+            "attributes": {
+                "administrative": false,
+                "constitutional": false,
+                "executive": false,
+                "judicial": false,
+                "legislative": false,
+                "primary": true
+            },
+            "coordinates": {
+                "lat": -6.16,
+                "lng": 35.75
+            },
+            "name": "Dodoma"
+        },
+        "Population": 70038850,
+        "Currencies": [
+            {
+                "code": "TZS",
+                "name": "Tanzanian shilling",
+                "symbol": "Sh"
+            }
+        ]
+    },
+    {
+        "KES": 0.05,
+        "USD": 0.0004,
+        "CAD": 0.0005,
+        "EUR": 0.0003,
+        "TZS": 1,
+        "EGP": 0.0207
+    }
+]
