@@ -5,6 +5,7 @@ To Setup:
 1. Run pip install requests python-dotenv
 2. Create a new file .env with: EXCHANGE-RATES=Your_API_Key and RESTCOUNTRIES=Your_API_Key
 3. Get free API Keys from rescountries.com and exchangerate-api.com
+4. Create a JSON file named data.json
 
 To Run:
 python day3_exercise.py
