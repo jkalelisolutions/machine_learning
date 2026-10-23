@@ -16,8 +16,9 @@ def get_weather(city):
 
 
 def get_country_info(country_code):
+    country_code = "+254"
     url = f"https://restcountries.com/v3.1/alpha/{country_code}"
-    response = requests.get(url)
+    response = requests.get(url, timeout=10)
     if response.status_code == 200:
         data = response.json()
         country = data  # Assuming the response is a list and we want the first country
