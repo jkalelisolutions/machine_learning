@@ -22,6 +22,7 @@ def load_data():
         try:
             with open("data.json", "r") as f:
                 data = json.load(f)
+                print(data)
                 return data
         except FileNotFoundError:
             print("data.json file not found.")
@@ -53,6 +54,7 @@ def country_info(country_code):
 
 def run_tool():
     data = load_data()
+    print(data)
 
     submit = [] 
     print("="*50)
@@ -109,3 +111,4 @@ def run_tool():
         print("Data not saved. Please try again")
     
 run_tool()
+
