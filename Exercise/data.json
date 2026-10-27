@@ -1,6 +1,6 @@
 [
     {
-        "Country": "Tanzania",
+        "Country": "Kenya",
         "Capital": {
             "attributes": {
                 "administrative": false,
@@ -11,26 +11,26 @@
                 "primary": true
             },
             "coordinates": {
-                "lat": -6.16,
-                "lng": 35.75
+                "lat": -1.28,
+                "lng": 36.82
             },
-            "name": "Dodoma"
+            "name": "Nairobi"
         },
-        "Population": 70038850,
+        "Population": 54227015,
         "Currencies": [
             {
-                "code": "TZS",
-                "name": "Tanzanian shilling",
+                "code": "KES",
+                "name": "Kenyan shilling",
                 "symbol": "Sh"
             }
         ]
     },
     {
-        "KES": 0.05,
-        "USD": 0.0004,
-        "CAD": 0.0005,
-        "EUR": 0.0003,
-        "TZS": 1,
-        "EGP": 0.0207
+        "KES": 1,
+        "USD": 0.0077,
+        "CAD": 0.0108,
+        "EUR": 0.0069,
+        "TZS": 20.42,
+        "EGP": 0.4228
     }
 ]
