@@ -42,7 +42,7 @@ try:
         system=system_prompt,
         messages=[{"role":"user", "content":question}]
     )
-    print(message.content[0].text)
+    print(message.content[0])
 except anthropic.APIConnectionError:
     print("No internet connection. Check your connection and try again.")
 except anthropic.AuthenticationError:
