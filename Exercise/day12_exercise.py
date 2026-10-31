@@ -1,9 +1,9 @@
-import anthropic
+import openai 
 import os
 import json
 from dotenv import load_dotenv
 load_dotenv()
-client=anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+client=openai.OpenAI(api_key=os.getenv("OPENAI_API"))
 
 system_prompt="""An AI property agent assistant, based in Nairobi
 Your rules:
@@ -28,18 +28,23 @@ try:
         if question.lower()=="exit":
             break
         messages.append({"role":"user","content":question})
-        response=client.messages.create(
-            model="claude-haiku-4-5",
+        response=client.chat.completions.create(
+            model="gpt-4o-mini",
             max_tokens=512,
-            system=system_prompt,
-            messages=messages
+            messages=[{"role":"system","content":system_prompt},{"role":"user","content":question}]
         )
-        reply= response.content[0]
+        reply= response.choices[0].message.content
         messages.append({"role":"assistant","content":reply})
         print(f"Assistant: {reply}")
-except anthropic.AuthenticationError:
+except openai.AuthenticationError:
     print("API Key is wrong or expired. Check you .env file.")
-except anthropic.APIConnectionError:
+except openai.APIConnectionError:
     print("No internet connection. Check your connection and try again.")
-except anthropic.RateLimitError:
+except openai.RateLimitError:
     print("Too many request. Wait 60 seconds and try again.")
+
+try:
+    with open("day12.json", "w") as f:
+        json.dump(messages,f,indent=2)
+except Exception as e:
+    print(f"[Error] Unexpected: {e}")
