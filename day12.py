@@ -28,4 +28,4 @@ message= client.messages.create(
     messages=[{"role":"user","content":"Do you deliver to Eldoret?"}]
 )
 
-print(message.content[0].text)
+print(message.content[0])
