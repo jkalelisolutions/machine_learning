@@ -1,7 +1,6 @@
 import anthropic
 import os
 from dotenv import load_dotenv
-import json
 import requests
 
 load_dotenv()
