@@ -4,7 +4,7 @@ The assistant is used to answer basic repetitive questions like "What is my bala
 
 ## To Setup
 
-1. pip install openai python-dotenv.
+1. pip install anthropic python-dotenv.
 2. Create a new file .env with: ANTHROPIC_API=your_api_here
 3. Get your api key from https://platform.claude.com
 
