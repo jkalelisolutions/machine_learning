@@ -16,9 +16,15 @@ python day5_project.py
 ## Example Output
 
 Status code: 200
+
 Exchange Rates:
+
 USD: 0.0077
+
 CAD: 0.0109
+
 EUR: 0.0069
+
 TZS: 20.32
+
 EGP: 0.4115
