@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#315c3b">
+    <title>Kiambu Poultry Farm | Egg Production</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --cream: #fffdd0;
+            --smoke: #f5f5f5;
+            --green: #315c3b;
+            --green-dark: #23452c;
+            --black: #20231f;
+            --brown: #79543a;
+            --muted: #6c7069;
+            --white: #ffffff;
+            --border: #e7e5d9;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-width: 320px;
+            margin: 0;
+            background: var(--smoke);
+            color: var(--black);
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        .topbar {
+            background: var(--green);
+            color: var(--white);
+        }
+
+        .topbar-inner,
+        main,
+        .footer-inner {
+            width: min(1080px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        .topbar-inner {
+            display: flex;
+            min-height: 76px;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 44px;
+            height: 44px;
+            flex: 0 0 auto;
+            place-items: center;
+            border-radius: 14px;
+            background: var(--cream);
+            color: var(--brown);
+        }
+
+        .brand-mark svg {
+            width: 29px;
+            height: 29px;
+        }
+
+        .brand-name {
+            margin: 0;
+            font-size: 1.08rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .brand-caption {
+            margin: 3px 0 0;
+            color: #e2eadf;
+            font-size: 0.82rem;
+        }
+
+        main {
+            padding: 46px 0 56px;
+        }
+
+        .intro {
+            margin-bottom: 28px;
+        }
+
+        .eyebrow {
+            margin: 0 0 8px;
+            color: var(--brown);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(1.8rem, 4vw, 2.45rem);
+            letter-spacing: -0.035em;
+        }
+
+        .intro-copy {
+            max-width: 580px;
+            margin: 10px 0 0;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        .panel {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--white);
+            box-shadow: 0 8px 24px rgb(32 35 31 / 5%);
+        }
+
+        .panel-content {
+            padding: 24px;
+        }
+
+        .panel-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 21px;
+        }
+
+        .icon-badge {
+            display: grid;
+            width: 42px;
+            height: 42px;
+            flex: 0 0 auto;
+            place-items: center;
+            border-radius: 12px;
+            background: var(--cream);
+            color: var(--green);
+        }
+
+        .icon-badge svg {
+            width: 21px;
+            height: 21px;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 1.08rem;
+        }
+
+        .panel-hint {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 0.88rem;
+            line-height: 1.45;
+        }
+
+        .field-label {
+            display: block;
+            margin: 0 0 7px;
+            font-size: 0.88rem;
+            font-weight: 650;
+        }
+
+        select,
+        input[type="number"] {
+            width: 100%;
+            min-height: 46px;
+            padding: 10px 12px;
+            border: 1px solid #d9dbd3;
+            border-radius: 9px;
+            background: var(--white);
+            color: var(--black);
+        }
+
+        select:focus,
+        input:focus {
+            border-color: var(--green);
+            outline: 3px solid rgb(49 92 59 / 15%);
+        }
+
+        .field {
+            margin-bottom: 16px;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .button {
+            display: inline-flex;
+            min-height: 43px;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border: 1px solid transparent;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 650;
+        }
+
+        .button svg {
+            width: 17px;
+            height: 17px;
+        }
+
+        .button-primary {
+            background: var(--green);
+            color: var(--white);
+        }
+
+        .button-primary:hover {
+            background: var(--green-dark);
+        }
+
+        .button-secondary {
+            border-color: var(--border);
+            background: var(--cream);
+            color: var(--brown);
+        }
+
+        .button-secondary:hover {
+            background: #f7f3bd;
+        }
+
+        .result-card {
+            min-height: 142px;
+            padding: 17px;
+            border: 1px dashed #d9dbd3;
+            border-radius: 11px;
+            background: var(--smoke);
+        }
+
+        .result-label {
+            margin: 0 0 8px;
+            color: var(--muted);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        #output {
+            margin: 0;
+            color: var(--black);
+            font-family: inherit;
+            font-size: 0.94rem;
+            line-height: 1.55;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .footnote {
+            margin: 14px 0 0;
+            color: var(--muted);
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            background: var(--cream);
+        }
+
+        .footer-inner {
+            padding: 18px 0;
+            color: var(--brown);
+            font-size: 0.83rem;
+        }
+
+        @media (max-width: 720px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            main {
+                padding-top: 34px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .topbar-inner,
+            main,
+            .footer-inner {
+                width: min(100% - 28px, 1080px);
+            }
+
+            .panel-content {
+                padding: 19px;
+            }
+
+            .button-row .button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 32 32" fill="none">
+                    <path d="M16 3.5c-4.7 0-9.3 8-9.3 15.1a9.3 9.3 0 0 0 18.6 0C25.3 11.5 20.7 3.5 16 3.5Z" fill="currentColor"/>
+                    <path d="M12 19.8c.3 2 1.6 3.2 3.4 3.7" stroke="#FFFDD0" stroke-linecap="round" stroke-width="1.8"/>
+                </svg>
+            </div>
+            <div>
+                <p class="brand-name">Kiambu Poultry Farm</p>
+                <p class="brand-caption">Egg production and shed stock</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro" aria-labelledby="page-title">
+            <p class="eyebrow">Farm operations</p>
+            <h1 id="page-title">Egg production dashboard</h1>
+            <p class="intro-copy">Check the current egg count or record new stock for one of the farm's sheds.</p>
+        </section>
+
+        <section class="dashboard" aria-label="Egg stock controls">
+            <article class="panel">
+                <div class="panel-content">
+                    <div class="panel-heading">
+                        <span class="icon-badge" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 3c-3.5 0-7 6-7 11a7 7 0 0 0 14 0c0-5-3.5-11-7-11Z"/>
+                                <path d="M9.5 15.5c.3 1.2 1.1 2 2.3 2.4"/>
+                            </svg>
+                        </span>
+                        <div>
+                            <h2>Check shed stock</h2>
+                            <p class="panel-hint">Retrieve the latest count from the API.</p>
+                        </div>
+                    </div>
+
+                    <label class="field-label" for="shed">Select a shed</label>
+                    <select id="shed" name="shed">
+                        <option value="shed_1">Shed 1</option>
+                        <option value="shed_2">Shed 2</option>
+                        <option value="shed_3">Shed 3</option>
+                    </select>
+                    <div class="button-row">
+                        <button class="button button-primary" id="get-eggs-button" type="button" onclick="get_eggs(document.getElementById('shed').value)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M20 7v5h-5"/>
+                                <path d="M4.9 9a7.5 7.5 0 0 1 12.5-2L20 12M4 17v-5h5"/>
+                                <path d="M19.1 15a7.5 7.5 0 0 1-12.5 2L4 12"/>
+                            </svg>
+                            Get egg count
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="panel">
+                <div class="panel-content">
+                    <div class="panel-heading">
+                        <span class="icon-badge" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 3c-3.5 0-7 6-7 11a7 7 0 0 0 14 0c0-5-3.5-11-7-11Z"/>
+                                <path d="M12 10v7M8.5 13.5h7"/>
+                            </svg>
+                        </span>
+                        <div>
+                            <h2>Record egg stock</h2>
+                            <p class="panel-hint">Submit a new count for a selected shed.</p>
+                        </div>
+                    </div>
+
+                    <label class="field-label" for="count">Egg count</label>
+                    <input id="count" name="count" type="number" min="0" step="1" placeholder="Enter the new count">
+                    <div class="button-row">
+                        <button class="button button-secondary" id="add-eggs-button" type="button" onclick="add_eggs()">
+                            Record count
+                        </button>
+                    </div>
+                    <p class="footnote">Choose the shed above before checking or recording its stock.</p>
+                </div>
+            </article>
+
+            <article class="panel" aria-labelledby="result-heading">
+                <div class="panel-content">
+                    <div class="panel-heading">
+                        <span class="icon-badge" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 19V5M4 19h16"/>
+                                <path d="m7 15 3-4 3 2 5-6"/>
+                                <path d="M15 7h3v3"/>
+                            </svg>
+                        </span>
+                        <div>
+                            <h2 id="result-heading">Latest result</h2>
+                            <p class="panel-hint">API response appears here.</p>
+                        </div>
+                    </div>
+                    <div class="result-card" aria-live="polite">
+                        <p class="result-label">Response</p>
+                        <pre id="output">Choose a shed and check its stock to see the latest result.</pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-inner">Kiambu Poultry Farm &bull; Egg stock management</div>
+    </footer>
+    <script src="{{ url_for('static', filename='day18_exercise.js') }}"></script>
+</body>
+</html>
