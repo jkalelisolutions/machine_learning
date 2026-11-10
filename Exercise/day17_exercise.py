@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request,render_template
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -13,7 +13,7 @@ stock={
 
 @app.route("/")
 def home():
-    return "Kiambu Poultry Farm API is running..."
+    return render_template("index.html")
 
 @app.route("/api/eggs", methods=["POST"])
 def add_eggs():
