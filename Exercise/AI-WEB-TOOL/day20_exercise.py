@@ -8,7 +8,7 @@ from datetime import datetime
 
 load_dotenv()
 
-client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API"))
 app = Flask(__name__)
 CORS(app)
 @app.route("/")
