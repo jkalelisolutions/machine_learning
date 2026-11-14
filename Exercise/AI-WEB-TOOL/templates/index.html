@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f5f3">
+  <title>Chat assistant</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f5f5f3;
+      --white: #fff;
+      --brown: #70513d;
+      --brown-dark: #4b362b;
+      --ink: #1d1b19;
+      --muted: #817a74;
+      --blue: #d7eff8;
+      --blue-strong: #acd9e9;
+      --line: #e8e4df;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 75% 4%, rgba(172, 217, 233, .34), transparent 34rem),
+        var(--paper);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .app {
+      width: min(1120px, 100%);
+      min-height: min(760px, calc(100vh - 48px));
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      overflow: hidden;
+      border: 1px solid rgba(75, 54, 43, .08);
+      border-radius: 24px;
+      background: var(--white);
+      box-shadow: 0 24px 70px rgba(48, 37, 30, .12);
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      padding: 28px 20px 20px;
+      color: #fffaf6;
+      background: var(--brown-dark);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin: 0 0 56px 4px;
+      font-size: 15px;
+      font-weight: 650;
+      letter-spacing: .02em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      color: var(--brown-dark);
+      background: var(--blue);
+      font-size: 18px;
+      font-weight: 750;
+    }
+
+    .sidebar-label {
+      margin: 0 0 12px 10px;
+      color: #c9b9ae;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .new-chat {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      border: 1px solid rgba(255, 255, 255, .16);
+      border-radius: 12px;
+      color: #fffaf6;
+      background: rgba(255, 255, 255, .08);
+      font-size: 13px;
+      font-weight: 550;
+    }
+
+    .new-chat span {
+      font-size: 18px;
+      font-weight: 400;
+    }
+
+    .sidebar-note {
+      margin-top: auto;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, .13);
+      border-radius: 14px;
+      color: #f2e9e3;
+      background: rgba(255, 255, 255, .06);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .sidebar-note strong {
+      display: block;
+      margin-bottom: 4px;
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .main {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+    }
+
+    .topbar {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 34px;
+      border-bottom: 1px solid #f0eeeb;
+    }
+
+    .topbar-title {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .online {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .online::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #7aa88c;
+      content: "";
+    }
+
+    .conversation {
+      width: min(680px, 100%);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-self: center;
+      padding: 76px 32px 28px;
+    }
+
+    .welcome {
+      margin: 0 0 9px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(32px, 5vw, 46px);
+      font-weight: 400;
+      letter-spacing: -.045em;
+      line-height: 1.14;
+    }
+
+    .intro {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .assistant-message {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-top: 40px;
+    }
+
+    .assistant-avatar {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      color: var(--brown-dark);
+      background: var(--blue);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 18px;
+    }
+
+    .message-content {
+      max-width: 480px;
+    }
+
+    .message-name {
+      margin: 1px 0 8px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .message-bubble {
+      padding: 14px 17px;
+      border: 1px solid #e8f1f4;
+      border-radius: 4px 16px 16px 16px;
+      background: #f1f8fa;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .messages {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .user-message {
+      max-width: 82%;
+      align-self: flex-end;
+      padding: 12px 16px;
+      border-radius: 16px 4px 16px 16px;
+      background: var(--blue);
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .reply {
+      max-width: 90%;
+      align-self: flex-start;
+      padding: 12px 16px;
+      border: 1px solid var(--line);
+      border-radius: 4px 16px 16px;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+    }
+
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 30px;
+    }
+
+    .suggestion {
+      padding: 9px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #55473e;
+      background: #fff;
+      cursor: pointer;
+      font-size: 11px;
+      transition: border-color .2s ease, background .2s ease, transform .2s ease;
+    }
+
+    .suggestion:hover {
+      transform: translateY(-1px);
+      border-color: var(--blue-strong);
+      background: #f5fbfd;
+    }
+
+    .composer-wrap {
+      margin-top: auto;
+      padding-top: 48px;
+    }
+
+    .composer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 58px;
+      padding: 7px 8px 7px 18px;
+      border: 1px solid #e8e4df;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 5px 20px rgba(48, 37, 30, .045);
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .composer:focus-within {
+      border-color: var(--blue-strong);
+      box-shadow: 0 0 0 4px rgba(172, 217, 233, .22);
+    }
+
+    .composer input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      color: var(--ink);
+      background: transparent;
+      font-size: 14px;
+    }
+
+    .composer input::placeholder {
+      color: #a29b95;
+    }
+
+    .send {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 12px;
+      color: var(--brown-dark);
+      background: var(--blue);
+      cursor: pointer;
+      transition: background .2s ease, transform .2s ease;
+    }
+
+    .send:hover {
+      transform: translateY(-1px);
+      background: var(--blue-strong);
+    }
+
+    .send:disabled {
+      cursor: wait;
+      opacity: .6;
+    }
+
+    .send svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .footnote {
+      margin: 12px 0 0;
+      color: #a29b95;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .status {
+      min-height: 17px;
+      margin: 8px 0 0;
+      color: var(--brown);
+      font-size: 11px;
+      text-align: center;
+    }
+
+    @media (max-width: 680px) {
+      body {
+        padding: 0;
+      }
+
+      .app {
+        min-height: 100vh;
+        grid-template-columns: 1fr;
+        border: 0;
+        border-radius: 0;
+      }
+
+      .sidebar {
+        min-height: 68px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 18px;
+      }
+
+      .brand {
+        margin: 0;
+      }
+
+      .sidebar-label,
+      .new-chat,
+      .sidebar-note {
+        display: none;
+      }
+
+      .topbar {
+        min-height: 58px;
+        padding: 0 20px;
+      }
+
+      .conversation {
+        min-height: calc(100vh - 126px);
+        padding: 58px 20px 20px;
+      }
+
+      .assistant-message {
+        margin-top: 32px;
+      }
+
+      .composer-wrap {
+        padding-top: 36px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Chat sidebar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">a.</span>
+        <span>Assistant</span>
+      </div>
+      <p class="sidebar-label">Workspace</p>
+      <div class="new-chat" aria-label="New conversation">
+        <span aria-hidden="true">+</span>
+        New conversation
+      </div>
+      <div class="sidebar-note">
+        <strong>Here to help</strong>
+        Share what's on your mind and we'll take it from there.
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <span class="topbar-title">A little help, whenever you need it.</span>
+        <span class="online">Ready to chat</span>
+      </header>
+
+      <section class="conversation" aria-label="Conversation">
+        <div>
+          <h1 class="welcome">What can I help you with</h1>
+          <p class="intro">I'm here to listen. Tell me what's going on, and we'll figure it out together.</p>
+        </div>
+
+        <div class="assistant-message">
+          <div class="assistant-avatar" aria-hidden="true">a.</div>
+          <div class="message-content">
+            <p class="message-name">Your assistant</p>
+            <div class="message-bubble">Hi there! How can I make things a little easier for you today?</div>
+          </div>
+        </div>
+
+        <div class="messages" id="messages" aria-live="polite"></div>
+
+        <div class="suggestions" aria-label="Suggested messages">
+          <button class="suggestion" type="button">I have a question</button>
+          <button class="suggestion" type="button">I need some help</button>
+          <button class="suggestion" type="button">I want to share feedback</button>
+        </div>
+
+        <div class="composer-wrap">
+          <form class="composer" id="chat-form">
+            <input id="message-input" name="message" type="text" placeholder="Ask here" autocomplete="off" aria-label="Ask here" required>
+            <button class="send" id="send-button" type="submit" aria-label="Send message">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4.75 12h14.5m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </form>
+          <p class="status" id="status" role="status"></p>
+          <p class="footnote">A thoughtful response starts with what you share.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='day20_exercise.js') }}">
+    
+  </script>
+</body>
+</html>
