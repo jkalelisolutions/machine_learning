@@ -16,7 +16,7 @@ def index():
     return render_template("index.html")
 
 
-def complaint_responder():
+def complaint_responder(question):
     system_prompt = """"You are a message Complaint Response Tool.
     Your task is to provide professional and empathetic responses to customer complaints.
     rules:
@@ -30,17 +30,15 @@ def complaint_responder():
     """
     try:
         messages= []
-        while True:
-            question = input()
-            if question.lower() == "exit":
-                break
+        
+        message = question
             
-        messages.append({"role":"user", "content":question})
+        messages.append({"role":"user", "content":message})
         response=client.messages.create(
                 model="claude-haiku-4-5",
                 max_tokens=512,
                 system=system_prompt,
-                messages=[{"role":"user","content":question}]
+                messages=[{"role":"user","content":message}]
             )
 
         reply = response.content[0]
@@ -66,14 +64,12 @@ def complaint_responder():
 
 @app.route("/api/complaint", methods=["POST"])
 def complaint():
-       data= complaint_responder()
-       return jsonify(data)
+       data= request.get_json()
+       question= data["question"]
+       result= complaint_responder(question)
+       return jsonify(result)
 
 
-
-    
-          
-   
-    
-            
-
+if __name__ == '__main__':
+       app.run(debug=True)
+           
