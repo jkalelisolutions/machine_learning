@@ -2,6 +2,9 @@ import smtplib, os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import csv
+import schedule
+import time
+import logging
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -78,6 +81,31 @@ def send_html():
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
         server.login(os.getenv("EMAIL_ADDRESS"), os.getenv("EMAIL_APP"))
         server.send_message(msg)
+
+schedule.every().day.at("18:00").do(send_html)
+while True:
+     schedule.run_pending()
+     time.sleep(30)
+     break
+
+logging.basicConfig(
+     filename="run_log.txt", 
+     level=logging.INFO,
+     format="%(asctime)s | %(levelname)s | %(message)s"
+)
+
+def log_info():
+     try:
+          sale= send_html()
+          if sale:
+               logging.info(f"This are your sales report {sale}. They have been send to your Email.")
+          else:
+               logging.info("OK- No sales report found")
+     except Exception as e:
+          logging.error(f"FAILED - {e}")
+
+
+
 
 send_html()
     
