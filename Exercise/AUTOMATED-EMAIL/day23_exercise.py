@@ -103,7 +103,7 @@ def log_info():
                logging.info("OK- No sales report found")
      except Exception as e:
           logging.error(f"FAILED - {e}")
-
+          
 
 
 
